@@ -1,0 +1,5 @@
+.pytest_cache
+__pycache__/
+projet_10.sublime-project
+projet_10.sublime-workspace
+nutellove/fr.openfoodfacts.org.products.csv
