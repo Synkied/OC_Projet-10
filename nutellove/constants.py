@@ -15,8 +15,13 @@ HEADERS_LIST = [
     "brands",
     "stores",
     "nutrition_grade_fr",
-    "main_category_fr",
-    'countries_fr',
+    "categories",
+    "image_url",
+    "image_small_url",
+    "last_modified_t",
+]
+
+NUTRIMENTS_LIST = [
     "energy_100g",
     "fat_100g",
     "carbohydrates_100g",
@@ -24,14 +29,11 @@ HEADERS_LIST = [
     "fiber_100g",
     "proteins_100g",
     "salt_100g",
-    "image_url",
-    "image_small_url",
-    "last_modified_t",
 ]
 
 CATEGORIES_LIST = [
     # 'Petit-déjeuners',
-    'Chips et frites',
+    # 'Chips et frites',
     # 'Soupes',
     'Biscuits',
 ]

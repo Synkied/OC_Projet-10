@@ -19,13 +19,40 @@ from constants import *
 
 
 products = openfoodfacts.products.advanced_search({
+    "search_url": "https://world.openfoodfacts.org/cgi/search.pl",
     "search_terms": "",  # empty for all the products in category
-    "category": "biscuits",
-    "page_size": "1000"
+    "tagtype_0": "categories",
+    "tag_contains_0": "contains",
+    "tag_0": "biscuits",
+    "page_size": "1000",
 })
 
+
+nutriments_data = []
+for product in products["products"]:
+    nutriments_data.append(product["nutriments"])
+
+nutriments_df = pd.DataFrame(nutriments_data).filter(NUTRIMENTS_LIST)
+print(nutriments_df)
+
+categories_data = []
+for product in products["products"]:
+    categories_data.append(product["categories"])
+
+categories_df = pd.DataFrame(categories_data).filter(CATEGORIES_LIST)
+print(categories_df)
+
+
 df = pd.DataFrame(products["products"]).filter(HEADERS_LIST)
-print(df)
+print(df.columns)
+
+
+# print(sorted(products["products"][0].keys()))
+
+# for i in products["products"]:
+#     for key, value in i.items():
+#         if key == "categories":
+#             print(value)
 
 
 # #####--- FUNCTIONS ----##### #
@@ -37,46 +64,16 @@ def get_unique_df_values(df_name, col_name):
     return unique_value_list
 
 
-def to_df(fname, headers):
+def to_dict(df, headers):
     """
-    Returns a pandas dataframe
+    Returns a cleaned list of dicts made from a df
     """
-
-    # reads the specified file.
-    # sep: csv file's separator
-    # low_memory: avoiding unnecessary warning msgs
-    csv_file = pd.read_csv(
-        fname,
-        sep=";",
-        encoding="utf-8",
-        low_memory=False
-    )
-
-    # defines a dataframe, from the passed headers
-    df = csv_file[headers]
-    return df
-
-
-def to_dict(fname, headers):
-    """
-    Returns a cleaned list of dicts made from a csv
-    """
-
-    # reads the specified file.
-    # sep: csv file's separator
-    # low_memory: avoiding unnecessary warning msgs
-    csv_file = pd.read_csv(
-        fname,
-        sep=";",
-        encoding="utf-8",
-        low_memory=False
-    )
 
     # Soft conversion of columns to pandas objects
-    df_to_objects = csv_file.astype(object).infer_objects()
+    df_to_objects = df.astype(object).infer_objects()
 
     # replace nan fields by None python type
-    fill_nan_as_none = df_to_objects.where((pd.notnull(csv_file)), None)
+    fill_nan_as_none = df_to_objects.where((pd.notnull(df)), None)
 
     # dict conversion of pandas dataframe as records (list of dicts)
     # [{k1:v1, kn:vn}, {k1:v1, kn:vn}]
@@ -101,6 +98,8 @@ def to_dict(fname, headers):
 
     return csv_dict
 
+
+# print(to_dict(df, HEADERS_LIST))
 
 # #####--- CLASSES ----##### #
 class DBFeed():
@@ -321,7 +320,7 @@ class DBFeed():
 
 
 def main():
-    print(len(products['products']))
+    print(products['count'])
     # for product in products:
     #     print(product["brands"])
     # print(sorted([i for i in products[0]]))
