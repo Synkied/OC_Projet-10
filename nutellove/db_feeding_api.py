@@ -2,6 +2,9 @@
 
 import datetime
 import os
+from math import ceil
+import time
+import json
 
 import django
 import pandas as pd
@@ -17,42 +20,73 @@ django.setup()
 from products.models import *
 from constants import *
 
+start = time.time()
 
-products = openfoodfacts.products.advanced_search({
+
+for_counting_purpose = openfoodfacts.products.advanced_search({
     "search_url": "https://world.openfoodfacts.org/cgi/search.pl",
     "search_terms": "",  # empty for all the products in category
     "tagtype_0": "categories",
     "tag_contains_0": "contains",
     "tag_0": "biscuits",
-    "page_size": "1000",
+    "page_size": "50",
 })
 
+count = for_counting_purpose["count"]
+page_size = for_counting_purpose["page_size"]
 
-nutriments_data = []
-for product in products["products"]:
-    nutriments_data.append(product["nutriments"])
+num_of_pages = ceil(int(count) / int(page_size))
 
-nutriments_df = pd.DataFrame(nutriments_data).filter(NUTRIMENTS_LIST)
-print(nutriments_df)
+results = {"search_results": {}}
 
-categories_data = []
-for product in products["products"]:
-    categories_data.append(product["categories"])
+test = {"products": []}
 
-categories_df = pd.DataFrame(categories_data).filter(CATEGORIES_LIST)
-print(categories_df)
+for page in range(1, num_of_pages):
+    search_result = openfoodfacts.products.advanced_search({
+        "search_url": "https://world.openfoodfacts.org/cgi/search.pl",
+        "search_terms": "",  # empty for all the products in category
+        "tagtype_0": "categories",
+        "tag_contains_0": "contains",
+        "tag_0": "biscuits",
+        "page_size": "50",
+        "page": page,
+    })
+
+    if "products" in results["search_results"]:
+        results["search_results"]["products"].extend(search_result["products"])
+    else:
+        results["search_results"]["products"] = search_result["products"]
+
+with open("text.txt", "w") as f:
+    for product in results["search_results"]["products"]:
+        f.writelines(str(product["code"]) + "\n")
+
+print(len(results["search_results"]["products"]))
 
 
-df = pd.DataFrame(products["products"]).filter(HEADERS_LIST)
-print(df.columns)
+end = time.time()
+print(end - start, "seconds elapsed for this task.")
 
+# nutriments_data = []
+# for products in results[0]["products"]:
+#     nutriments_data.append(products["nutriments"])
 
-# print(sorted(products["products"][0].keys()))
+# nutriments_df = pd.DataFrame(nutriments_data).filter(NUTRIMENTS_LIST)
 
-# for i in products["products"]:
-#     for key, value in i.items():
-#         if key == "categories":
-#             print(value)
+# categories_data = []
+# for products in results[0]["products"]:
+#     categories_data.append(products["categories"])
+
+# for category in categories_data:
+#     if category in CATEGORIES_LIST:
+#         categories_df = pd.DataFrame(categories_data)
+
+# for products in results[0]["products"]:
+#     df = pd.DataFrame.from_dict(products, orient="index").filter(HEADERS_LIST)
+
+# frames = [df, categories_df, nutriments_df]
+
+# products_df = pd.concat(frames)
 
 
 # #####--- FUNCTIONS ----##### #
@@ -320,7 +354,7 @@ class DBFeed():
 
 
 def main():
-    print(products['count'])
+    pass
     # for product in products:
     #     print(product["brands"])
     # print(sorted([i for i in products[0]]))
