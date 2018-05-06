@@ -57,36 +57,40 @@ for page in range(1, num_of_pages):
     else:
         results["search_results"]["products"] = search_result["products"]
 
-with open("text.txt", "w") as f:
-    for product in results["search_results"]["products"]:
-        f.writelines(str(product["code"]) + "\n")
+# with open("text.txt", "w") as f:
+#     for product in results["search_results"]["products"]:
+#         f.writelines(str(product["code"]) + "\n")
 
 print(len(results["search_results"]["products"]))
 
 
+nutriments_data = []
+for products in results["search_results"]["products"]:
+    nutriments_data.append(products["nutriments"])
+
+nutriments_df = pd.DataFrame(nutriments_data).filter(NUTRIMENTS_LIST)
+
+categories_data = []
+for products in results["search_results"]["products"]:
+    categories_data.append(products["categories"])
+
+for category in categories_data:
+    if category in CATEGORIES_LIST:
+        categories_df = pd.DataFrame(categories_data)
+
+
+for products in results["search_results"]["products"]:
+    df = pd.DataFrame.from_dict(products, orient="index").filter(HEADERS_LIST)
+
+frames = [df, categories_df, nutriments_df]
+
+products_df = pd.concat(frames)
+
+print(products_df)
+
+
 end = time.time()
 print(end - start, "seconds elapsed for this task.")
-
-# nutriments_data = []
-# for products in results[0]["products"]:
-#     nutriments_data.append(products["nutriments"])
-
-# nutriments_df = pd.DataFrame(nutriments_data).filter(NUTRIMENTS_LIST)
-
-# categories_data = []
-# for products in results[0]["products"]:
-#     categories_data.append(products["categories"])
-
-# for category in categories_data:
-#     if category in CATEGORIES_LIST:
-#         categories_df = pd.DataFrame(categories_data)
-
-# for products in results[0]["products"]:
-#     df = pd.DataFrame.from_dict(products, orient="index").filter(HEADERS_LIST)
-
-# frames = [df, categories_df, nutriments_df]
-
-# products_df = pd.concat(frames)
 
 
 # #####--- FUNCTIONS ----##### #

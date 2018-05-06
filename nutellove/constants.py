@@ -16,6 +16,8 @@ HEADERS_LIST = [
     "stores",
     "nutrition_grade_fr",
     "categories",
+    "main_category_fr",
+    "countries_fr",
     "image_url",
     "image_small_url",
     "last_modified_t",

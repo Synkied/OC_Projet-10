@@ -17,5 +17,5 @@ for i in range(10):
 
 
 
-
-print(results)
+for product in results["search_results"]["products"]:
+    print(product)
