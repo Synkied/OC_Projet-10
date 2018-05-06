@@ -42,7 +42,8 @@ class CSVCleaner():
             'ingredients_from_palm_oil_tags': 'object',
             'origins': 'object',
             'origins_tags': 'object',
-            'stores': 'object'
+            'stores': 'object',
+            'serving_quantity': 'object',
         }
 
         # reads the specified file.
