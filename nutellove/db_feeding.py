@@ -310,7 +310,7 @@ class DBFeed():
 
 
 def main():
-    dbf = DBFeed(CLEANED_CSV_FILE, HEADERS_LIST)
+    dbf = DBFeed(CLEANED_CSV_FILE, HEADERS_LIST + NUTRIMENTS_LIST)
 
     dbf.fill_categories("main_category_fr")
     dbf.fill_stores("stores")
