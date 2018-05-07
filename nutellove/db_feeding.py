@@ -2,6 +2,7 @@
 
 import datetime
 import os
+import time
 
 import django
 import pandas as pd
@@ -310,12 +311,18 @@ class DBFeed():
 
 
 def main():
+    start = time.time()
+
     dbf = DBFeed(CLEANED_CSV_FILE, HEADERS_LIST + NUTRIMENTS_LIST)
 
     dbf.fill_categories("main_category_fr")
     dbf.fill_stores("stores")
     dbf.fill_brands("brands")
     dbf.fill_products()
+
+    end = time.time()
+
+    print(end - start, "elapsed.")
 
 
 if __name__ == "__main__":
