@@ -16,7 +16,7 @@ class CSVCleaner():
         pd.options.mode.chained_assignment = None  # default='warn'
         self.file_name = file_name
 
-    def csv_reading(self, headers, categories=[], countries=[]):
+    def csv_reading(self, headers, categories=[], countries=[], nutriments=[]):
         """
         Reads the csv passed to the instanciation of the class.
         headers: a list of headers that must be in the file.
@@ -105,6 +105,12 @@ if __name__ == "__main__":
 
     new_csv = CSVCleaner("fr.openfoodfacts.org.products.csv")
 
-    csv_file = new_csv.csv_reading(HEADERS_LIST, CATEGORIES_LIST, COUNTRIES_LIST)
+    # concatening headers + nutriments to have a seaparate list for each,
+    # but having them both in the resulting csv file
+    csv_file = new_csv.csv_reading(
+        HEADERS_LIST + NUTRIMENTS_LIST,
+        CATEGORIES_LIST,
+        COUNTRIES_LIST
+    )
 
     new_csv.output_to_csv(csv_file)
