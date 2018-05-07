@@ -33,7 +33,9 @@ else:
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
-    'nutellove.herokuapp.com'
+    'nutellove.herokuapp.com',
+    '188.166.108.19',
+    '192.168.1.19',
 ]
 
 
