@@ -36,7 +36,8 @@ ALLOWED_HOSTS = [
     'nutellove.herokuapp.com',
     '188.166.108.19',
     '192.168.1.19',
-    '90.24.232.134'
+    '90.24.232.134',
+    'nutellove.sytes.net',
 ]
 
 
