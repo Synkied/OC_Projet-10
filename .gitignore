@@ -2,5 +2,6 @@
 __pycache__/
 projet_10.sublime-project
 projet_10.sublime-workspace
-nutellove/fr.openfoodfacts.org.products.csv
-nutellove/settings/production.py
+nutellove_project/fr.openfoodfacts.org.products.csv
+nutellove_project/settings/production.py
+nutellove_project/staticfiles

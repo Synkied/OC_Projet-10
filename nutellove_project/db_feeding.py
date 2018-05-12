@@ -8,7 +8,7 @@ import django
 import pandas as pd
 
 # used to execute this file without django running
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "nutellove.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 django.setup()
 
 # imported avfter django.setup() to let the django apps load first
