@@ -2,19 +2,24 @@ import functools
 import operator
 
 from django.contrib import auth
-from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
+from django.http import HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from .models import Brand, Category, Product, Favorite
 from django.utils.translation import gettext
 from django.views import View
 from django.db.models import Q
 
+import logging
+
 from .controllers import *
 
-# Create your views here.
+# Get an instance of a logger
 
+logger = logging.getLogger(__name__)
+
+
+# Create your views here.
 
 def listing(request):  # pragma: no cover
     """
@@ -135,6 +140,12 @@ class Search(View):
         """
         Used to handle queries from user and perform a search
         """
+
+        logger.info('New search', exc_info=True, extra={
+            # Optionally pass a request and we'll grab any information we can
+            'request': request,
+        })
+
         query = request.GET.get('query')
 
         user = auth.get_user(request)
@@ -260,6 +271,11 @@ class FavoriteView(LoginRequiredMixin, View):
         Adds or remove a product to the connected user's favorites
         """
 
+        logger.info('Favorite added', exc_info=True, extra={
+            # Optionally pass a request and we'll grab any information we can
+            'request': request,
+        })
+
         # Get the user if connected
         user = auth.get_user(request)
 
@@ -273,5 +289,9 @@ class FavoriteView(LoginRequiredMixin, View):
         # Then we believe that the request was to delete the bookmark
         if not created:
             favorite.delete()
+            logger.info('Favorite removed', exc_info=True, extra={
+                # Optionally pass a request and we'll grab any information we can
+                'request': request,
+            })
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
