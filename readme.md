@@ -9,7 +9,7 @@ The user can then favorite the suggested products (or not) after creating regist
 ### Python 3
 
 Install from : https://www.python.org/downloads/  
-Preferably choose Python 3.6.3
+Preferably choose Python 3.5 or 3.6.3
 
 ### Virtualenv and VirtualenvWrapper
 
