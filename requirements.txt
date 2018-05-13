@@ -16,7 +16,7 @@ locket==0.2.0
 more-itertools==4.1.0
 msgpack==0.5.6
 numpy==1.14.2
-openfoodfacts==0.1.0
+git+https://github.com/openfoodfacts/openfoodfacts-python
 pandas==0.22.0
 partd==0.3.8
 pluggy==0.6.0
