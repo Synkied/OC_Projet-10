@@ -1,7 +1,0 @@
-__pycache__/
-nutellove/__pycache__/
-products/__pycache__/
-fr.openfoodfacts.org.products.csv
-.coverage
-.coveragerc
-htmlcov
