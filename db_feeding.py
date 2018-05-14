@@ -170,26 +170,30 @@ class DBFeed():
         products_dict = csv_to_dict(self.file_name, self.headers)
 
         for product in products_dict:
-            Product.objects.get_or_create(
-                code=product["code"],
+            # https://docs.djangoproject.com/en/2.0/ref/models/querysets/#update-or-create
+            p, created = Product.objects.update_or_create(
                 url=product["url"],  # unique
-                name=product["product_name"],
-                nutri_grade=product["nutrition_grade_fr"],
-                cat=Category.objects.get(
-                    name=product["main_category_fr"]
-                ),
-                energy=product["energy_100g"],
-                fat=product["fat_100g"],
-                carbs=product["carbohydrates_100g"],
-                sugars=product["sugars_100g"],
-                fibers=product["fiber_100g"],
-                proteins=product["proteins_100g"],
-                salt=product["salt_100g"],
-                img=product["image_url"],
-                img_small=product["image_small_url"],
-                last_modified_t=django.utils.timezone.make_aware(
-                    datetime.datetime.fromtimestamp(product["last_modified_t"])
-                ),
+                defaults={
+                    'code': product["code"],
+                    'url': product["url"],  # unique
+                    'name': product["product_name"],
+                    'nutri_grade': product["nutrition_grade_fr"],
+                    'cat': Category.objects.get(
+                        name=product["main_category_fr"]
+                    ),
+                    'energy': product["energy_100g"],
+                    'fat': product["fat_100g"],
+                    'carbs': product["carbohydrates_100g"],
+                    'sugars': product["sugars_100g"],
+                    'fibers': product["fiber_100g"],
+                    'proteins': product["proteins_100g"],
+                    'salt': product["salt_100g"],
+                    'img': product["image_url"],
+                    'img_small': product["image_small_url"],
+                    'last_modified_t': django.utils.timezone.make_aware(
+                        datetime.datetime.fromtimestamp(product["last_modified_t"])
+                    )
+                }
             )
 
         print("Products fed")
